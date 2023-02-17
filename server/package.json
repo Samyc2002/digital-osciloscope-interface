@@ -11,7 +11,7 @@
     "format-check": "prettier --check \"**/*.{ts,tsx,js,scss}\"",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
-  "author": "Atul Singh",
+  "author": "Samriddha Chattopadhyay",
   "license": "ISC",
   "dependencies": {
     "@types/cookie-parser": "^1.4.3",
