@@ -47,7 +47,6 @@ const LoginScreen = (props: any) => {
         props.navigation.navigate("Monitor");
       })
       .catch(console.log);
-    props.navigation.navigate("Monitor");
   };
 
   return (

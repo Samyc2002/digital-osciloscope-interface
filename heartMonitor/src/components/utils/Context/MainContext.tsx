@@ -6,7 +6,7 @@ export interface User {
   phone: Number;
 }
 
-interface Context {
+export interface Context {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
