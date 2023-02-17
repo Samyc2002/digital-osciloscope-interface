@@ -26,27 +26,27 @@ const LoginScreen = (props: any) => {
       }
     };
     console.log(JSON.stringify(body, null, 2));
-    /* fetch(`${apiendpoint}/auth/login`, { */
-    /*   method: "POST", */
-    /*   headers: { */
-    /*     "Content-Type": "application/json" */
-    /*   }, */
-    /*   body: JSON.stringify(body) */
-    /* }) */
-    /*   .then((res) => { */
-    /*     console.log(res.status); */
-    /*     if (res.ok) return res.json(); */
-    /*     else throw new Error("Unauthorized"); */
-    /*   }) */
-    /*   .then((json) => { */
-    /*     console.log(json.data); */
-    /*     const saveJWT = async () => { */
-    /*       await AsyncStorage.setItem("jwt", json.data.token); */
-    /*     }; */
-    /*     saveJWT(); */
-    /*     props.navigation.navigate("Monitor"); */
-    /*   }) */
-    /*   .catch(console.log); */
+    fetch(`${apiendpoint}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    })
+      .then((res) => {
+        console.log(res.status);
+        if (res.ok) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json) => {
+        console.log(json.data);
+        const saveJWT = async () => {
+          await AsyncStorage.setItem("jwt", json.data.token);
+        };
+        saveJWT();
+        props.navigation.navigate("Monitor");
+      })
+      .catch(console.log);
     props.navigation.navigate("Monitor");
   };
 

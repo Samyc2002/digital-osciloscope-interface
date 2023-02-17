@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
-    "create-bundle": "tsc && node dist/index.js",
+    "create-bundle": "tsc && node src/index.js",
     "start": "node dist/index.js",
     "format": "prettier --write \"**/*.{ts,tsx,js,scss}\" && npm run lint:fix",
     "format-check": "prettier --check \"**/*.{ts,tsx,js,scss}\"",
