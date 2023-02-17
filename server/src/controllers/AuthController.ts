@@ -3,7 +3,7 @@
 import { Request, Response, NextFunction } from "express";
 import { getEnvironmentVariables } from "../environments/env";
 import UserDetail from "../models/User/UserAuthDetails";
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 export class AuthController {
   static async login(req: Request, res: Response, next: NextFunction) {
     try {
@@ -43,6 +43,52 @@ export class AuthController {
             token
           },
           success: true
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async getUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const bearerHeader = req.headers.authorization;
+      console.log(bearerHeader);
+
+      if (typeof bearerHeader !== "undefined") {
+        const bearer = bearerHeader.split(" ");
+        const bearerToken = bearer[1];
+        verify(
+          bearerToken,
+          getEnvironmentVariables().jwt_secret, // token secret
+          (err: any, authdata: any) => {
+            console.log(authdata);
+            if (err) {
+              res.status(403).json({
+                status: "error",
+                data: {},
+                error: "user not logged in",
+                success: "user logged in"
+              });
+            } else {
+              const user = {
+                id: authdata._id,
+                name: authdata.name,
+                phone: authdata.phone
+              };
+              res.status(200).json({
+                data: { user },
+                success: true
+              });
+            }
+          }
+        );
+      } else {
+        res.status(403).json({
+          status: "error",
+          data: {},
+          error: "user not logged in",
+          success: "user logged in"
         });
       }
     } catch (err) {
