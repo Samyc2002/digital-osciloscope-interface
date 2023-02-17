@@ -1,1 +1,1 @@
-export const apiendpoint = "http://localhost:5000";
+export const apiendpoint = "https://digital-osciloscope-interface-production.up.railway.app";

@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Chart, Line, Area, HorizontalAxis, VerticalAxis } from "react-native-responsive-linechart";
 
 import Colors from "../../ref/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const MonitorScreen = () => {
+const MonitorScreen = (props: any) => {
   const [data, setData] = React.useState([
     { x: -20, y: 15 },
     { x: -19, y: 10 },
@@ -49,6 +50,11 @@ const MonitorScreen = () => {
     { x: 19, y: 13.5 },
     { x: 20, y: 18 }
   ]);
+
+  const logout = async () => {
+    await AsyncStorage.removeItem("jwt");
+    props.navigation.navigate("Login");
+  };
 
   return (
     <SafeAreaView
@@ -111,6 +117,27 @@ const MonitorScreen = () => {
             }}
           />
         </Chart>
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            margin: 30,
+            marginTop: 60,
+            marginBottom: 0,
+            justifyContent: "flex-end"
+          }}
+          onPress={logout}
+        >
+          <View
+            style={{
+              backgroundColor: Colors.Accent,
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              borderRadius: 100
+            }}
+          >
+            <Text style={{ color: Colors.Text }}>Logout</Text>
+          </View>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
