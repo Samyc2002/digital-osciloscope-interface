@@ -1,13 +1,22 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform
+} from "react-native";
 
 import Colors from "../../ref/Colors";
 import { apiendpoint } from "../../components/utils/apiendpoint";
 
 const LoginScreen = (props: any) => {
   const [name, setName] = React.useState("");
+  const [age, setAge] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -56,144 +65,172 @@ const LoginScreen = (props: any) => {
         flex: 1
       }}
     >
-      <View style={{ justifyContent: "center", alignItems: "center", marginTop: 60 }}>
-        <Image source={require("../../ref/loader.png")} />
-      </View>
-      <View style={{ marginTop: 60 }}>
-        <Text
-          style={{
-            color: Colors.Theme,
-            fontStyle: "normal",
-            fontWeight: "500",
-            fontSize: 30,
-            letterSpacing: 0.05,
-            marginLeft: 40
-          }}
-        >
-          Welcome Back!
-        </Text>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          margin: 30,
-          marginTop: 20,
-          marginBottom: 0,
-          borderRadius: 100,
-          borderWidth: 2,
-          borderColor: Colors.Text,
-          paddingLeft: 20
-        }}
-      >
-        <TextInput
-          style={{
-            flex: 1,
-            color: Colors.Text
-          }}
-          value={name}
-          placeholder="Name"
-          cursorColor={Colors.Text}
-          selectionColor={Colors.Text}
-          placeholderTextColor={Colors.Text}
-          onChangeText={(text) => setName(text)}
-        />
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          margin: 30,
-          marginTop: 20,
-          marginBottom: 0,
-          borderRadius: 100,
-          borderWidth: 2,
-          borderColor: Colors.Text,
-          paddingLeft: 20
-        }}
-      >
-        <TextInput
-          style={{
-            flex: 1,
-            color: Colors.Text
-          }}
-          value={email}
-          placeholder="Email"
-          cursorColor={Colors.Text}
-          selectionColor={Colors.Text}
-          placeholderTextColor={Colors.Text}
-          onChangeText={(text) => setEmail(text)}
-        />
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          margin: 30,
-          marginTop: 20,
-          marginBottom: 0,
-          borderRadius: 100,
-          borderWidth: 2,
-          borderColor: Colors.Text,
-          paddingLeft: 20
-        }}
-      >
-        <TextInput
-          style={{
-            flex: 1,
-            color: Colors.Text
-          }}
-          value={phone}
-          placeholder="Phone Number"
-          cursorColor={Colors.Text}
-          selectionColor={Colors.Text}
-          placeholderTextColor={Colors.Text}
-          onChangeText={(text) => setPhone(text)}
-        />
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          margin: 30,
-          marginTop: 20,
-          marginBottom: 0,
-          borderRadius: 100,
-          borderWidth: 2,
-          borderColor: Colors.Text,
-          paddingLeft: 20
-        }}
-      >
-        <TextInput
-          style={{
-            flex: 1,
-            color: Colors.Text
-          }}
-          value={password}
-          placeholder="Password"
-          cursorColor={Colors.Text}
-          selectionColor={Colors.Text}
-          placeholderTextColor={Colors.Text}
-          onChangeText={(text) => setPassword(text)}
-        />
-      </View>
-      <TouchableOpacity
-        style={{
-          flexDirection: "row",
-          margin: 30,
-          marginTop: 60,
-          marginBottom: 0,
-          justifyContent: "flex-end"
-        }}
-        onPress={login}
-      >
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        <View style={{ justifyContent: "center", alignItems: "center", marginTop: 60 }}>
+          <Image source={require("../../ref/loader.png")} />
+        </View>
+        <View style={{ marginTop: 60 }}>
+          <Text
+            style={{
+              color: Colors.Theme,
+              fontStyle: "normal",
+              fontWeight: "500",
+              fontSize: 30,
+              letterSpacing: 0.05,
+              marginLeft: 40
+            }}
+          >
+            Welcome Back!
+          </Text>
+        </View>
         <View
           style={{
-            backgroundColor: Colors.Accent,
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-            borderRadius: 100
+            flexDirection: "row",
+            margin: 30,
+            marginTop: 20,
+            marginBottom: 0,
+            borderRadius: 100,
+            borderWidth: 2,
+            borderColor: Colors.Text,
+            paddingLeft: 20
           }}
         >
-          <Text style={{ color: Colors.Text }}>Login</Text>
+          <TextInput
+            style={{
+              flex: 1,
+              color: Colors.Text
+            }}
+            value={name}
+            placeholder="Name"
+            cursorColor={Colors.Text}
+            selectionColor={Colors.Text}
+            placeholderTextColor={Colors.Text}
+            onChangeText={(text) => setName(text)}
+          />
         </View>
-      </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: "row",
+            margin: 30,
+            marginTop: 20,
+            marginBottom: 0,
+            borderRadius: 100,
+            borderWidth: 2,
+            borderColor: Colors.Text,
+            paddingLeft: 20
+          }}
+        >
+          <TextInput
+            style={{
+              flex: 1,
+              color: Colors.Text
+            }}
+            value={age}
+            keyboardType={"numeric"}
+            placeholder="Age"
+            cursorColor={Colors.Text}
+            selectionColor={Colors.Text}
+            placeholderTextColor={Colors.Text}
+            onChangeText={(text) => setAge(text)}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            margin: 30,
+            marginTop: 20,
+            marginBottom: 0,
+            borderRadius: 100,
+            borderWidth: 2,
+            borderColor: Colors.Text,
+            paddingLeft: 20
+          }}
+        >
+          <TextInput
+            style={{
+              flex: 1,
+              color: Colors.Text
+            }}
+            value={email}
+            placeholder="Email"
+            cursorColor={Colors.Text}
+            selectionColor={Colors.Text}
+            placeholderTextColor={Colors.Text}
+            onChangeText={(text) => setEmail(text)}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            margin: 30,
+            marginTop: 20,
+            marginBottom: 0,
+            borderRadius: 100,
+            borderWidth: 2,
+            borderColor: Colors.Text,
+            paddingLeft: 20
+          }}
+        >
+          <TextInput
+            style={{
+              flex: 1,
+              color: Colors.Text
+            }}
+            value={phone}
+            placeholder="Phone Number"
+            cursorColor={Colors.Text}
+            selectionColor={Colors.Text}
+            placeholderTextColor={Colors.Text}
+            onChangeText={(text) => setPhone(text)}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            margin: 30,
+            marginTop: 20,
+            marginBottom: 0,
+            borderRadius: 100,
+            borderWidth: 2,
+            borderColor: Colors.Text,
+            paddingLeft: 20
+          }}
+        >
+          <TextInput
+            style={{
+              flex: 1,
+              color: Colors.Text
+            }}
+            value={password}
+            placeholder="Password"
+            cursorColor={Colors.Text}
+            selectionColor={Colors.Text}
+            placeholderTextColor={Colors.Text}
+            onChangeText={(text) => setPassword(text)}
+          />
+        </View>
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            margin: 30,
+            marginTop: 60,
+            marginBottom: 0,
+            justifyContent: "flex-end"
+          }}
+          onPress={login}
+        >
+          <View
+            style={{
+              backgroundColor: Colors.Accent,
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              borderRadius: 100
+            }}
+          >
+            <Text style={{ color: Colors.Text }}>Login</Text>
+          </View>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

@@ -5,14 +5,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Colors from "../../ref/Colors";
 import { apiendpoint } from "../../components/utils/apiendpoint";
-import AppContext, { Context, User } from "./MainContext";
+import AppContext, { Context } from "../../components/utils/Context/MainContext";
 
 const SplashScreen = (props: any) => {
-  const { setUser }: Context | null = React.useContext(AppContext);
+  const { setUser } = React.useContext<any>(AppContext);
 
   React.useEffect(() => {
     setTimeout(async () => {
       const jwt = await AsyncStorage.getItem("jwt");
+      console.log(jwt);
       if (!jwt) props.navigation.navigate("Login");
       else
         fetch(`${apiendpoint}/auth/getUser`, {
@@ -32,6 +33,7 @@ const SplashScreen = (props: any) => {
             props.navigation.navigate("Monitor");
           })
           .catch(console.log);
+      props.navigation.navigate("Monitor");
     }, 2500);
   }, []);
 
