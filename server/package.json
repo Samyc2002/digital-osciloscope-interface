@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
-    "deploy-aws": "sudo nodemon -L --exec ts-node src/index.ts",
+    "deploy-aws": "tsc && sudo node src/index.js",
     "deploy": "firebase deploy --only functions:app",
     "create-bundle": "tsc && node src/index.js",
     "start": "node src/index.js",
