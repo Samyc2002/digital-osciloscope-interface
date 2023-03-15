@@ -6,6 +6,7 @@ import * as bodyParser from 'body-parser';
 import * as mongoose from 'mongoose';
 //server file imports
 import AuthRouter from './routers/AuthRouter';
+import HeartDataRouter from './routers/HeartDataRouter';
 import { getEnvironmentVariables } from './environments/env';
 
 export class Server {
@@ -34,6 +35,7 @@ export class Server {
   setRoutes() {
     // all the server api routes go here
     this.app.use('/auth', AuthRouter);
+    this.app.use('/heartData', HeartDataRouter);
   }
 
   connectMongoDb() {

@@ -8,6 +8,7 @@ interface IUserDetail {
   created_at: string;
   updated_at: string;
   password: String;
+  heartData: Number[];
 }
 export type UserDetailDocument = IUserDetail & Document;
 
@@ -19,7 +20,8 @@ const UserDetailSchema: Schema = new Schema({
   created_at: { type: Date, required: false, default: new Date() },
   updated_at: { type: Date, required: true, default: new Date() },
   password: { type: String, required: false, default: "" },
-  isActive: { type: Boolean, required: false, default: false }
+  isActive: { type: Boolean, required: false, default: false },
+  heartData: { type: [Number], required: false, default: [] }
 });
 
 const UserDetail = model("UserDetail", UserDetailSchema);
