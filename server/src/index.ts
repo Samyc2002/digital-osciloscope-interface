@@ -12,8 +12,8 @@ const options = {
 };
 const server2 = https.createServer(options, server);
 
-const port = process.env.PORT || 443;
-server2.listen(port, () => {
+const port = process.env.PORT || 5000;
+server.listen(port, () => {
   console.log(`server is running ${port}`);
 });
 

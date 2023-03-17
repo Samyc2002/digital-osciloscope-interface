@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import * as express from 'express';
-import { Response } from 'express';
-import * as bodyParser from 'body-parser';
-import * as mongoose from 'mongoose';
+import * as express from "express";
+import { Response } from "express";
+import * as bodyParser from "body-parser";
+import * as mongoose from "mongoose";
+import * as cors from "cors";
 //server file imports
-import AuthRouter from './routers/AuthRouter';
-import HeartDataRouter from './routers/HeartDataRouter';
-import { getEnvironmentVariables } from './environments/env';
+import AuthRouter from "./routers/AuthRouter";
+import HeartDataRouter from "./routers/HeartDataRouter";
+import { getEnvironmentVariables } from "./environments/env";
 
 export class Server {
   public app: express.Application = express();
@@ -23,27 +24,28 @@ export class Server {
     // boilerplate configuration of the packages
     this.connectMongoDb();
     this.configureBodyParser();
-    console.log('Configurations have been successfully setup');
+    this.app.use(cors());
+    console.log("Configurations have been successfully setup");
   }
 
   configureBodyParser() {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
-    console.log('body-parser setup');
+    console.log("body-parser setup");
   }
 
   setRoutes() {
     // all the server api routes go here
-    this.app.use('/auth', AuthRouter);
-    this.app.use('/heartData', HeartDataRouter);
+    this.app.use("/auth", AuthRouter);
+    this.app.use("/heartData", HeartDataRouter);
   }
 
   connectMongoDb() {
     // establishing connection with mongodb
     const databaseUrl = getEnvironmentVariables().db_url;
     mongoose.connect(databaseUrl);
-    mongoose.connection.on('open', () => {
-      console.log('connection successfully made with database');
+    mongoose.connection.on("open", () => {
+      console.log("connection successfully made with database");
     });
   }
 
@@ -51,7 +53,7 @@ export class Server {
     // Error when api request with invalid path is fired to the server
     this.app.use((req, res) => {
       res.status(404).json({
-        message: 'Not Found',
+        message: "Not Found",
         status_code: 404
       });
     });
@@ -62,7 +64,7 @@ export class Server {
     this.app.use((error: any, req: any, res: Response) => {
       const errorStatus = req.errorStatus || 500;
       res.status(errorStatus).json({
-        message: error.message || 'Something Went Wrong. Please Try Again',
+        message: error.message || "Something Went Wrong. Please Try Again",
         status_code: errorStatus,
         success: false
       });

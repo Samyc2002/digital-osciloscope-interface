@@ -1,12 +1,37 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Chart, Line, Area, HorizontalAxis, VerticalAxis } from "react-native-responsive-linechart";
 
 import Colors from "../../ref/Colors";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { apiendpoint } from "../../components/utils/apiendpoint";
 
 const MonitorScreen = (props: any) => {
+  React.useEffect(() => {
+    const loader = async () => {
+      var jwt = await AsyncStorage.getItem("jwt");
+      fetch(`${apiendpoint}/auth/getUser`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`
+        }
+      })
+        .then((res) => {
+          console.log(res.status);
+          if (res.ok) return res.json();
+          else throw new Error("Unauthorized");
+        })
+        .then((json) => {
+          /* setUser(json.data); */
+          /* props.navigation.navigate("Monitor"); */
+        })
+        .catch(console.log);
+    };
+
+    loader();
+  }, []);
   const [data, setData] = React.useState([
     { x: -20, y: 15 },
     { x: -19, y: 10 },

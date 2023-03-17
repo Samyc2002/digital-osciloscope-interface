@@ -16,7 +16,7 @@ export class HeartDataController {
         verify(
           bearerToken,
           getEnvironmentVariables().jwt_secret, // token secret
-          (err: any, authdata: any) => {
+          async (err: any, authdata: any) => {
             console.log(authdata);
             if (err) {
               res.status(403).json({
@@ -26,7 +26,13 @@ export class HeartDataController {
                 success: "user logged in"
               });
             } else {
-              const data = authdata.heartData;
+              const userAuthData = {
+                id: authdata._id,
+                name: authdata.name,
+                phone: authdata.phone
+              };
+              var userData: any = await UserDetail.findOne(userAuthData);
+              var data = userData?.heartData;
               res.status(200).json({
                 data,
                 success: true
