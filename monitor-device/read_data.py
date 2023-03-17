@@ -2,6 +2,7 @@
 import time
 import json
 import random
+import numpy
 import pymongo
 import requests
 
@@ -47,7 +48,7 @@ while True:
         "Content-Type": "application/json",
     }
 
-    payload = json.dumps({"value": random.randint(1, 100)})
+    payload = json.dumps({"value": numpy.sin(2 * numpy.pi * numpy.arange(100))})
 
     # if humidity is not None and temperature is not None:
     response = requests.post(
