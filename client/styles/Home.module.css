@@ -97,7 +97,7 @@
 
 .center::before,
 .center::after {
-  content: '';
+  content: "";
   left: 50%;
   position: absolute;
   filter: blur(45px);
@@ -125,7 +125,7 @@
 
 .thirteen::before,
 .thirteen::after {
-  content: '';
+  content: "";
   position: absolute;
   z-index: -1;
 }
@@ -155,6 +155,40 @@
   min-width: 60vw;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 62vw;
+}
+
+.btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  min-width: 20vw;
+}
+
+.pass {
+  background: rgba(var(--card-rgb), 0.1);
+  border-radius: calc(var(--border-radius) / 2);
+  border: 1px solid rgba(var(--card-border-rgb), 0.15);
+  margin: 1rem 0.5rem;
+  padding: 0.5rem 1rem;
+  font-family: "inter";
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.button {
+  margin: 1rem 0.9rem;
+  padding: 0.5rem 1rem;
+  background-color: #ff4820;
+  border-radius: calc(var(--border-radius) / 2);
+  font-family: "inter";
+  cursor: pointer;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
@@ -164,6 +198,16 @@
 
   .card:hover span {
     transform: translateX(4px);
+  }
+
+  .pass:hover {
+    background: rgba(var(--card-rgb), 0.3);
+    border: 1px solid rgba(var(--card-border-rgb), 0.15);
+  }
+
+  .button:hover {
+    background: rgba(var(--card-rgb), 0.3);
+    border: 1px solid rgba(var(--card-border-rgb), 0.3);
   }
 }
 

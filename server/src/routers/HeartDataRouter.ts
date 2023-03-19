@@ -36,7 +36,10 @@ class HeartDataRouter {
   }
   deleteRoutes(): void {
     // add all get routes here
-    // this.router.delete()
+    this.router.delete(
+      "/", // path of api request
+      HeartDataController.deleteData // Main business logic of the server that returns the required response.
+    );
   }
 }
 export default new HeartDataRouter().router;

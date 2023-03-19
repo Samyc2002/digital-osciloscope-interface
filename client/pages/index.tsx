@@ -67,7 +67,36 @@ export default function Home() {
     chart: { id: "bar-chart" },
     xaxis: {
       categories: []
+    },
+    dataLabels: {
+      enabled: true
     }
+    /* stroke: { */
+    /*   curve: "smooth" */
+    /* } */
+  };
+
+  const deleteData = () => {
+    const jwt = localStorage.getItem("jwt");
+    axios({
+      method: "DELETE",
+      url: `${apiendpoint}/heartData`,
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${jwt}`
+      },
+      data: JSON.stringify([])
+    })
+      .then(({ data }) => {
+        console.log(data);
+        window.location.reload();
+      })
+      .catch(console.log);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("jwt");
+    window.location.reload();
   };
 
   return (
@@ -80,9 +109,19 @@ export default function Home() {
       </Head>
       {!auth && <Login />}
       <main className={styles.main}>
-        <h2 className={inter.className}>
-          Welcome{user ? ` Back, ${user?.name?.split(" ")[0]}` : ""}!
-        </h2>
+        <div className={styles.header}>
+          <h2 className={inter.className}>
+            Welcome{user ? ` Back, ${user?.name?.split(" ")[0]}` : ""}!
+          </h2>
+          <div className={styles.btns}>
+            <div className={styles.pass} onClick={deleteData}>
+              Delete Previous Data
+            </div>
+            <div className={styles.button} onClick={logout}>
+              Logout
+            </div>
+          </div>
+        </div>
         <ReactApexChart
           options={options}
           series={[
