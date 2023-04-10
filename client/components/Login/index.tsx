@@ -25,6 +25,7 @@ const Login = () => {
         password: pass
       }
     };
+    console.log(body);
     axios({
       method: "POST",
       url: `${apiendpoint}/auth/login`,

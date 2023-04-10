@@ -9,7 +9,7 @@ import Login from "@/components/Login";
 import dynamic from "next/dynamic";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
-  ssr: false
+  ssr: false,
 });
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,7 +17,8 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const [user, setUser] = React.useState<any>({});
   const [auth, setAuth] = React.useState(false);
-  const [data, setData] = React.useState([10, 20, 30, 40, 50, 60]);
+  const [xData, setXData] = React.useState<number[]>([]);
+  const [yData, setYData] = React.useState<number[]>([]);
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
@@ -32,8 +33,8 @@ export default function Home() {
         url: `${apiendpoint}/auth/getUser`,
         headers: {
           "Content-type": "application/json",
-          Authorization: `Bearer ${jwt}`
-        }
+          Authorization: `Bearer ${jwt}`,
+        },
       })
         .then(({ data }) => {
           console.log(data);
@@ -44,33 +45,42 @@ export default function Home() {
   }, [auth]);
 
   React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    setInterval(() => {
-      axios({
-        method: "GET",
-        url: `${apiendpoint}/heartData`,
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${jwt}`
-        }
-      })
-        .then(({ data }) => {
-          console.log(data);
-          setData(data?.data);
+    if (!auth) {
+      const jwt = localStorage.getItem("jwt");
+      setInterval(() => {
+        axios({
+          method: "GET",
+          url: `${apiendpoint}/heartData`,
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
         })
-        .catch(console.log);
-    }, 2000);
-  }, []);
+          .then(({ data }) => {
+            console.log(data);
+            let x: number[] = [], y: number[] = [];
+            data?.data.forEach((element: number, id: number) => {
+              // if (id % 2 === 0) 
+                y.push(element);
+              // else x.push(element);
+            });
+            setXData(x);
+            setYData(y);
+          })
+          .catch(console.log);
+      }, 1000);
+    }
+  }, [auth]);
 
   const options = {
     //data on the x-axis
     chart: { id: "bar-chart" },
     xaxis: {
-      categories: []
+      categories: [],
     },
     dataLabels: {
-      enabled: true
-    }
+      enabled: false,
+    },
     /* stroke: { */
     /*   curve: "smooth" */
     /* } */
@@ -83,9 +93,9 @@ export default function Home() {
       url: `${apiendpoint}/heartData`,
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${jwt}`
+        Authorization: `Bearer ${jwt}`,
       },
-      data: JSON.stringify([])
+      data: JSON.stringify([]),
     })
       .then(({ data }) => {
         console.log(data);
@@ -127,8 +137,8 @@ export default function Home() {
           series={[
             {
               name: "Heart Data",
-              data
-            }
+              data: yData,
+            },
           ]}
           type="area"
           className={styles.chart}

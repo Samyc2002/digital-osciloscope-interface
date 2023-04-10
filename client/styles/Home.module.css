@@ -175,7 +175,7 @@
   border: 1px solid rgba(var(--card-border-rgb), 0.15);
   margin: 1rem 0.5rem;
   padding: 0.5rem 1rem;
-  font-family: "inter";
+  font-family: "inter", sans-serif;
   cursor: pointer;
   transition: 0.4s;
 }
@@ -185,7 +185,7 @@
   padding: 0.5rem 1rem;
   background-color: #ff4820;
   border-radius: calc(var(--border-radius) / 2);
-  font-family: "inter";
+  font-family: "inter", sans-serif;
   cursor: pointer;
 }
 

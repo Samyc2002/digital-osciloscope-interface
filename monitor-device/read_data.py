@@ -4,7 +4,7 @@ import json
 import random
 import pymongo
 import requests
-import numpy
+import numpy as np
 
 # import RPi.GPIO as GPIO
 # import ADS1x15
@@ -35,6 +35,49 @@ client = pymongo.MongoClient(mongo_url)
 db = client[mongo_db]
 collection = db[mongo_collection]
 
+# Define the time points for one cycle of the ECG signal
+fs = 1000 # Sample rate in Hz
+t = np.arange(0, 1, 1/fs)
+
+# Generate baseline drift and add it to the signal
+baseline = np.cumsum(np.random.randn(len(t)))
+ecg = baseline + np.random.randn(len(t)) * 0.5
+
+# Add P-wave
+p_start = int(0.1 * fs)
+p_end = int(0.15 * fs)
+p_wave = np.linspace(0, 1, p_end - p_start)
+ecg[p_start:p_end] += p_wave
+
+# Add QRS complex
+q_start = int(0.15 * fs)
+q_end = int(0.4 * fs)
+qrs_wave = np.concatenate([np.linspace(0, 1, int((q_end-q_start)*0.4)),
+                            np.linspace(1, 0.2, int((q_end-q_start)*0.1)),
+                            np.linspace(0.2, -0.3, int((q_end-q_start)*0.2)),
+                            np.linspace(-0.3, 0, int((q_end-q_start)*0.3))])
+ecg[q_start:q_start+len(qrs_wave)] += qrs_wave
+
+# Add T-wave
+t_start = int(0.4 * fs)
+t_end = int(0.5 * fs)
+t_wave = np.linspace(0, 1, t_end - t_start)
+ecg[t_start:t_end] += t_wave
+
+# Add R-peak
+r_peak = np.max(ecg[q_start:q_end])
+r_peak_index = np.argmax(ecg[q_start:q_end]) + q_start
+ecg[r_peak_index-2:r_peak_index+3] += [0, r_peak/2, r_peak, r_peak/2, 0]
+
+# Add ST-segment
+st_start = int(0.5 * fs)
+st_end = int(0.6 * fs)
+st_segment = np.linspace(0, -0.5, st_end - st_start)
+ecg[st_start:st_end] += st_segment
+
+# Add noise
+ecg += np.random.normal(0, 0.1, len(ecg))
+
 # Read sensor data and insert into MongoDB
 while True:
     # Read DHT22 sensor data
@@ -48,17 +91,28 @@ while True:
         "Content-Type": "application/json",
     }
 
-    payload = json.dumps({"value": random.randint(1, 100)})
+    for i in ecg:
+        # payload = json.dumps({"value": t[i]})
+        # response = requests.post(
+        #     "https://d392-14-139-150-66.in.ngrok.io/heartData",
+        #     headers=headers,
+        #     data=payload,
+        #     verify=False,
+        #     )
+        # print(response.json())
+        # time.sleep(1)
+        payload = json.dumps({"value": i})
+        response = requests.post(
+            "https://d392-14-139-150-66.in.ngrok.io/heartData",
+            headers=headers,
+            data=payload,
+            verify=False,
+        )
+        print(response.json())
+        # time.sleep(1)
+
 
     # if humidity is not None and temperature is not None:
-    response = requests.post(
-        "https://18.217.188.119:443/heartData",
-        headers=headers,
-        data=payload,
-        verify=False,
-    )
-    print(response.json())
-    time.sleep(1)
     #     print("Data inserted into MongoDB:", data)
     # else:
     #     print("Failed to retrieve data from sensor")
